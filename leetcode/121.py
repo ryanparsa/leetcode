@@ -1,7 +1,6 @@
 """
 https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
 """
-from typing import List
 
 
 def maxProfitBruteForce(prices):
@@ -9,7 +8,10 @@ def maxProfitBruteForce(prices):
 
     for i in range(len(prices)):
         for j in range(i + 1, len(prices)):
-            max_profit = max(max_profit, prices[j] - prices[i])
+            i_val = prices[i]
+            j_val = prices[j]
+            profit = j_val - i_val
+            max_profit = max(max_profit, profit)
 
     return max_profit
 
@@ -49,13 +51,22 @@ def maxProfitMemory(prices):
     return max_profit
 
 
-class Solution:
-    def maxProfit(self, prices: List[int]) -> int:
-        # return maxProfitBruteForce(prices)
-        # return maxProfitMemory(prices)
-        return maxProfitBruteForce(prices)
+def max_profit(prices: list[int]) -> int:
+    p1 = 0
+    p2 = 1
+    max_prof = 0
+
+    while p2 < len(prices):
+        if prices[p1] < prices[p2]:
+            max_prof = max(max_prof, prices[p2] - prices[p1])
+        else:
+            p1 = p2
+        p2 += 1
+
+    return max_prof
 
 
-s = Solution()
-print(s.maxProfit([7, 1, 5, 3, 6, 4]))
-# print(s.maxProfit([7, 6, 4, 3, 1]))
+print(maxProfitBruteForce([7, 1, 5, 3, 6, 4]))
+print(maxProfitDynamicProgramming([7, 1, 5, 3, 6, 4]))
+print(maxProfitMemory([7, 1, 5, 3, 6, 4]))
+print(max_profit([7, 1, 5, 3, 6, 4]))
